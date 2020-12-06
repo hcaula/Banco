@@ -11,16 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-import br.ufpe.cin.banco.Banco;
-import br.ufpe.cin.banco.Conta;
-import br.ufpe.cin.banco.ContaAbstrata;
-import br.ufpe.cin.banco.ContaEspecial;
-import br.ufpe.cin.banco.ContaImposto;
-import br.ufpe.cin.banco.ContaJaCadastradaException;
-import br.ufpe.cin.banco.Poupanca;
-import br.ufpe.cin.banco.RenderBonusContaEspecialException;
-import br.ufpe.cin.banco.RenderJurosPoupancaException;
-import br.ufpe.cin.banco.SaldoInsuficienteException;
+import br.ufpe.cin.banco.*;
 import br.ufpe.cin.dados.ContaNaoEncontradaException;
 import br.ufpe.cin.dados.RepositorioContasArray;
 
@@ -80,7 +71,7 @@ public class FrameBanco extends JFrame {
 	}
 
 	private void erroNumero() {
-		erroNumero("Informe o número da conta desejada");
+		erroNumero("Informe o nï¿½mero da conta desejada");
 	}
 	
 	private void erroNumero(String mensagem) {
@@ -88,13 +79,13 @@ public class FrameBanco extends JFrame {
 		tf_numero.selectAll();
 		tf_numero.requestFocus();
 	}
-	
+
 	private void erroSaldo(String mensagem) {
 		JOptionPane.showMessageDialog(this, mensagem);
 		tf_valor.selectAll();
 		tf_valor.requestFocus();
 	}
-	
+
 	private void sucesso(String mensagem) {
 		JOptionPane.showMessageDialog(this, mensagem);
 		tf_numero.setText("");
@@ -110,7 +101,7 @@ public class FrameBanco extends JFrame {
 	private void initialize() {
 		this.setSize(382, 207);
 		this.setContentPane(getJContentPane());
-		this.setTitle("Aplicação Bancária");
+		this.setTitle("Aplicaï¿½ï¿½o Bancï¿½ria");
 	}
 
 	/**
@@ -223,6 +214,8 @@ public class FrameBanco extends JFrame {
 				erroConversao();
 			} catch (ContaNaoEncontradaException e) {
 				erroNumero(e.getMessage());
+			} catch (OperacaoComValoresNegativoException e) {
+				erroSaldo(e.getMessage());
 			}
 		}
 	}
@@ -261,6 +254,8 @@ public class FrameBanco extends JFrame {
 			} catch (ContaNaoEncontradaException e) {
 				erroNumero(e.getMessage());
 			} catch (SaldoInsuficienteException e) {
+				erroSaldo(e.getMessage());
+			} catch (OperacaoComValoresNegativoException e) {
 				erroSaldo(e.getMessage());
 			}
 		}
@@ -304,6 +299,8 @@ public class FrameBanco extends JFrame {
 			} catch (ContaNaoEncontradaException e) {
 				erroNumero(e.getMessage());
 			} catch (SaldoInsuficienteException e) {
+				erroSaldo(e.getMessage());
+			} catch (OperacaoComValoresNegativoException e) {
 				erroSaldo(e.getMessage());
 			}
 		}
@@ -373,6 +370,8 @@ public class FrameBanco extends JFrame {
 				erroNumero(e.getMessage());
 			} catch (RenderJurosPoupancaException e) {
 				erroNumero(e.getMessage());
+			} catch (OperacaoComValoresNegativoException e) {
+				erroSaldo(e.getMessage());
 			}
 		}
 	}
@@ -408,6 +407,8 @@ public class FrameBanco extends JFrame {
 				erroNumero(e.getMessage());
 			} catch (RenderBonusContaEspecialException e) {
 				erroNumero(e.getMessage());
+			} catch (OperacaoComValoresNegativoException e) {
+				erroSaldo(e.getMessage());
 			}
 		}
 	}
@@ -420,7 +421,7 @@ public class FrameBanco extends JFrame {
 	private JTextField getTf_numero() {
 		if (tf_numero == null) {
 			tf_numero = new JTextField();
-			tf_numero.setToolTipText("Número da conta a ser operada (se transferencia, conta de origem)");
+			tf_numero.setToolTipText("Nï¿½mero da conta a ser operada (se transferencia, conta de origem)");
 			tf_numero.setBounds(new Rectangle(0
 					, 7, 103, 28));
 		}

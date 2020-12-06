@@ -1,21 +1,14 @@
 package br.ufpe.cin.ui.main;
 
-import br.ufpe.cin.banco.Banco;
-import br.ufpe.cin.banco.Conta;
-import br.ufpe.cin.banco.ContaEspecial;
-import br.ufpe.cin.banco.ContaImposto;
-import br.ufpe.cin.banco.ContaJaCadastradaException;
-import br.ufpe.cin.banco.Poupanca;
-import br.ufpe.cin.banco.RenderBonusContaEspecialException;
-import br.ufpe.cin.banco.RenderJurosPoupancaException;
-import br.ufpe.cin.banco.SaldoInsuficienteException;
+import br.ufpe.cin.banco.*;
 import br.ufpe.cin.dados.ContaNaoEncontradaException;
 import br.ufpe.cin.dados.RepositorioContas;
 import br.ufpe.cin.dados.RepositorioContasArray;
+import br.ufpe.cin.dados.RepositorioVector;
 
 /**
- * Mova a classe Programa para o pacote aula15.br.ufpe.cin.ui, 
- * ela deve tratar todas as excecoes dando uma mensagem de 
+ * Mova a classe Programa para o pacote aula15.br.ufpe.cin.ui,
+ * ela deve tratar todas as excecoes dando uma mensagem de
  * erro para o usuario
  *
  */
@@ -23,7 +16,7 @@ public class Programa {
 
 	public static void main(String[] args) {
 		try {
-			RepositorioContas repositorio = new RepositorioContasArray(100);
+			RepositorioContas repositorio = new RepositorioVector();
 			Banco banco = new Banco(repositorio);
 
 			banco.cadastrar(new Conta("123"));
@@ -39,16 +32,16 @@ public class Programa {
 			banco.debitar("123", 10);
 			banco.debitar("456", 20);
 			banco.debitar("789", 30);
-			banco.debitar("012", 40);		
+			banco.debitar("012", 40);
 
 			System.out.println("123: " + banco.getSaldo("123"));
 			System.out.println("456: " + banco.getSaldo("456"));
 			System.out.println("789: " + banco.getSaldo("789"));
 			System.out.println("012: " + banco.getSaldo("012"));
-			
+
 			banco.renderBonus("456");
 			banco.renderJuros("789");
-			
+
 			System.out.println("\nDepois de render juros e bonus...");
 			System.out.println("123: " + banco.getSaldo("123"));
 			System.out.println("456: " + banco.getSaldo("456"));
@@ -56,14 +49,16 @@ public class Programa {
 			System.out.println("012: " + banco.getSaldo("012"));
 
 			banco.transferir("123", "789", 10);
-			
+
 			System.out.println("\nDepois de transferir...");
 			System.out.println("123: " + banco.getSaldo("123"));
 			System.out.println("456: " + banco.getSaldo("456"));
 			System.out.println("789: " + banco.getSaldo("789"));
 			System.out.println("012: " + banco.getSaldo("012"));
-			
+
 			System.out.println("\nAgora a proxima linha gera um erro que ser‡ devidaente tratado");
+			banco.debitar("123", -2);
+			banco.creditar("123", -2);
 			banco.renderBonus("123");
 		} catch (ContaJaCadastradaException e) {
 			System.out.println(e.getMessage());
@@ -74,6 +69,8 @@ public class Programa {
 		} catch (RenderBonusContaEspecialException e) {
 			System.out.println(e.getMessage());
 		} catch (RenderJurosPoupancaException e) {
+			System.out.println(e.getMessage());
+		} catch (OperacaoComValoresNegativoException e) {
 			System.out.println(e.getMessage());
 		}
 	}

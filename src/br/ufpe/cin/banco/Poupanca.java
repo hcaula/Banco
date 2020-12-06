@@ -10,7 +10,7 @@ public class Poupanca extends Conta {
 		this(numero, 0.0);
 	}
 	
-	public void renderJuros(double taxa) {
+	public void renderJuros(double taxa) throws OperacaoComValoresNegativoException {
 		double juros = this.getSaldo() * taxa;
 		this.creditar(juros);
 	}
